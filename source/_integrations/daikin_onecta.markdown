@@ -11,12 +11,20 @@ ha_codeowners:
 ha_domain: daikin_onecta
 ha_integration_type: device
 ha_platforms:
+  - binary_sensor
+  - button
   - climate
+  - fan
+  - select
+  - sensor
+  - switch
+  - update
+  - water_heater
 ---
 
 The **Daikin Onecta** {% term integration %} lets you monitor and control compatible Daikin heating and cooling devices through the [Daikin Onecta](https://www.daikin.eu/en_us/product-group/control-systems/onecta.html) cloud service.
 
-Devices are discovered from the Onecta account. The climate entities available for a device depend on the climate-control management points and capabilities that Daikin reports for it.
+Devices are discovered from the Onecta account. The entities available for a device depend on the management points and capabilities that Daikin reports for it.
 
 ## Prerequisites
 
@@ -52,7 +60,8 @@ Daikin lists Daikin Home Controls (`EKRACPUR1PA`) and Daikin HomeHub (`EKRHH`) a
 
 - The integration is cloud-based and needs a working internet connection and access to the Daikin ONECTA service.
 - Support is limited to Daikin gateway families that support third-party ONECTA Cloud API access. A gateway can report device state without supporting API control.
-- The integration currently provides climate entities. The exact controls available depend on the capabilities reported by each Daikin climate-control management point.
+- The exact entities and controls available depend on the capabilities reported by each management point.
+- Air-purifier support has not yet been validated with a physical device.
 
 ## Configuration options
 
@@ -68,6 +77,14 @@ Expose HomeKit compatible fan speed aliases:
 Depending on the capabilities reported by the device, the integration can provide:
 
 - Climate control: HVAC mode, target temperature, fan mode, swing mode, and preset mode.
+- Water heaters: domestic-hot-water temperature, operating mode, and on/off control for compatible tanks and flow-through heaters.
+- Air purifiers: on/off control, presets, and fixed fan speed for compatible air-purifier management points. This support has not yet been validated with a physical device.
+- Sensors: device and management-point values, including temperatures, humidity, particulate-matter concentration, Wi-Fi diagnostics, rate-limit information, and energy consumption or production when reported by Daikin.
+- Binary sensors: reported status and problem conditions, such as error, warning, emergency, and mode-conflict states.
+- Switches: additional writable on/off characteristics that are not represented by climate or water-heater entities.
+- Schedule selection: choose or disable a schedule when the management point reports schedules.
+- Firmware updates: install a firmware update when Daikin reports one as available and supported.
+- Refresh buttons: request an immediate cloud update for a gateway.
 
 ## Daikin Onecta automation examples
 
@@ -129,16 +146,16 @@ The OAuth client credentials may not match the Daikin Developer Portal configura
 
 ### Symptom
 
-One or more expected climate entities are not created.
+One or more expected entities are not created.
 
 #### Description
 
-Home Assistant creates climate entities only for functions that Daikin reports for the device.
+Home Assistant creates entities only for functions that Daikin reports for the device.
 
 #### Resolution
 
 1. Confirm that the device is online and visible in the Onecta app.
-2. If a supported climate function is still missing, report the device model and the missing function.
+2. If a supported function is still missing, report the device model and the missing function.
 
 {% enddetails %}
 
